@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PruebaSodModelStoreContainer" CdmEntityContainer="PruebaSodEntities">
+    <EntitySetMapping Name="Clientes">
+      <EntityTypeMapping TypeName="PruebaSodModel.Clientes">
+        <MappingFragment StoreEntitySet="Clientes">
+          <ScalarProperty Name="Nit" ColumnName="Nit" />
+          <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Facturas">
+      <EntityTypeMapping TypeName="PruebaSodModel.Facturas">
+        <MappingFragment StoreEntitySet="Facturas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+          <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Impuestoes">
+      <EntityTypeMapping TypeName="PruebaSodModel.Impuestoes">
+        <MappingFragment StoreEntitySet="Impuestoes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Productoes">
+      <EntityTypeMapping TypeName="PruebaSodModel.Productoes">
+        <MappingFragment StoreEntitySet="Productoes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
+          <ScalarProperty Name="IdImpuesto" ColumnName="IdImpuesto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Productosporfactura">
+      <EntityTypeMapping TypeName="PruebaSodModel.Productosporfactura">
+        <MappingFragment StoreEntitySet="Productosporfactura">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+          <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AddFactura_Sp" FunctionName="PruebaSodModel.Store.AddFactura_Sp" />
+    <FunctionImportMapping FunctionImportName="AddProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.AddProductosporfactura_Sp" />
+    <FunctionImportMapping FunctionImportName="GetFactura_Sp" FunctionName="PruebaSodModel.Store.GetFactura_Sp">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PruebaSodModel.GetFactura_Sp_Result">
+          <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Nit" ColumnName="Nit" />
+          <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetFacturaPorproducto_Sp" FunctionName="PruebaSodModel.Store.GetFacturaPorproducto_Sp">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PruebaSodModel.GetFacturaPorproducto_Sp_Result">
+          <ScalarProperty Name="Productorid" ColumnName="Productorid" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
+          <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetFacturas_Sp" FunctionName="PruebaSodModel.Store.GetFacturas_Sp">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PruebaSodModel.GetFacturas_Sp_Result">
+          <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+          <ScalarProperty Name="Nit" ColumnName="Nit" />
+          <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="DeleteFactura_Sp" FunctionName="PruebaSodModel.Store.DeleteFactura_Sp" />
+    <FunctionImportMapping FunctionImportName="DeleteProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.DeleteProductosporfactura_Sp" />
+    <FunctionImportMapping FunctionImportName="GetProductosfactura_Sp" FunctionName="PruebaSodModel.Store.GetProductosfactura_Sp">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PruebaSodModel.GetProductosfactura_Sp_Result">
+          <ScalarProperty Name="Productorid" ColumnName="Productorid" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
+          <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

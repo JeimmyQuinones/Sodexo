@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PruebaSodModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Nit" />
+          </Key>
+          <Property Name="Nit" Type="int" Nullable="false" />
+          <Property Name="RazonSocial" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Telefono" Type="bigint" Nullable="false" />
+          <Property Name="Direccion" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Correo" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCliente" Type="int" Nullable="false" />
+          <Property Name="Subtotal" Type="float" Nullable="false" />
+          <Property Name="Total" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Impuestoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="porcentaje" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Productoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Valorunidad" Type="int" Nullable="false" />
+          <Property Name="IdImpuesto" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Productosporfactura">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProducto" Type="int" Nullable="false" />
+          <Property Name="IdFactura" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto">
+          <End Role="Impuestoes" Type="Self.Impuestoes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Productoes" Type="Self.Productoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Impuestoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Productoes">
+              <PropertyRef Name="IdImpuesto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Clientes">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Nit" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productosporfactura_Facturas">
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
+          <End Role="Productosporfactura" Type="Self.Productosporfactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facturas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Productosporfactura">
+              <PropertyRef Name="IdFactura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productosporfactura_Productoes">
+          <End Role="Productoes" Type="Self.Productoes" Multiplicity="1" />
+          <End Role="Productosporfactura" Type="Self.Productosporfactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Productosporfactura">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddFactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCliente" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="float" Mode="In" />
+          <Parameter Name="Subtotal" Type="float" Mode="In" />
+        </Function>
+        <Function Name="AddProductosporfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdFactura" Type="int" Mode="In" />
+          <Parameter Name="IdProducto" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteFactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdFactura" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteProductosporfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFacturaPorproducto_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFacturas_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetProductosfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="PruebaSodModelStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facturas" EntityType="Self.Facturas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Impuestoes" EntityType="Self.Impuestoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Productoes" EntityType="Self.Productoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Productosporfactura" EntityType="Self.Productosporfactura" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto" Association="Self.FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto">
+            <End Role="Impuestoes" EntitySet="Impuestoes" />
+            <End Role="Productoes" EntitySet="Productoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Clientes" Association="Self.FK_Facturas_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productosporfactura_Facturas" Association="Self.FK_Productosporfactura_Facturas">
+            <End Role="Facturas" EntitySet="Facturas" />
+            <End Role="Productosporfactura" EntitySet="Productosporfactura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productosporfactura_Productoes" Association="Self.FK_Productosporfactura_Productoes">
+            <End Role="Productoes" EntitySet="Productoes" />
+            <End Role="Productosporfactura" EntitySet="Productosporfactura" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PruebaSodModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Nit" />
+          </Key>
+          <Property Name="Nit" Type="Int32" Nullable="false" />
+          <Property Name="RazonSocial" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefono" Type="Int64" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Facturas" Relationship="Self.FK_Facturas_Clientes" FromRole="Clientes" ToRole="Facturas" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCliente" Type="Int32" Nullable="false" />
+          <Property Name="Subtotal" Type="Double" Nullable="false" />
+          <Property Name="Total" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK_Facturas_Clientes" FromRole="Facturas" ToRole="Clientes" />
+          <NavigationProperty Name="Productosporfactura" Relationship="Self.FK_Productosporfactura_Facturas" FromRole="Facturas" ToRole="Productosporfactura" />
+        </EntityType>
+        <EntityType Name="Impuestoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="porcentaje" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Productoes" Relationship="Self.FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto" FromRole="Impuestoes" ToRole="Productoes" />
+        </EntityType>
+        <EntityType Name="Productoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Valorunidad" Type="Int32" Nullable="false" />
+          <Property Name="IdImpuesto" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Impuestoes" Relationship="Self.FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto" FromRole="Productoes" ToRole="Impuestoes" />
+          <NavigationProperty Name="Productosporfactura" Relationship="Self.FK_Productosporfactura_Productoes" FromRole="Productoes" ToRole="Productosporfactura" />
+        </EntityType>
+        <EntityType Name="Productosporfactura">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProducto" Type="Int32" Nullable="false" />
+          <Property Name="IdFactura" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Facturas" Relationship="Self.FK_Productosporfactura_Facturas" FromRole="Productosporfactura" ToRole="Facturas" />
+          <NavigationProperty Name="Productoes" Relationship="Self.FK_Productosporfactura_Productoes" FromRole="Productosporfactura" ToRole="Productoes" />
+        </EntityType>
+        <Association Name="FK_Facturas_Clientes">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Nit" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productosporfactura_Facturas">
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="1" />
+          <End Role="Productosporfactura" Type="Self.Productosporfactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facturas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Productosporfactura">
+              <PropertyRef Name="IdFactura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto">
+          <End Role="Impuestoes" Type="Self.Impuestoes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Productoes" Type="Self.Productoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Impuestoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Productoes">
+              <PropertyRef Name="IdImpuesto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productosporfactura_Productoes">
+          <End Role="Productoes" Type="Self.Productoes" Multiplicity="1" />
+          <End Role="Productosporfactura" Type="Self.Productosporfactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Productosporfactura">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaSodEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" />
+          <EntitySet Name="Facturas" EntityType="Self.Facturas" />
+          <EntitySet Name="Impuestoes" EntityType="Self.Impuestoes" />
+          <EntitySet Name="Productoes" EntityType="Self.Productoes" />
+          <EntitySet Name="Productosporfactura" EntityType="Self.Productosporfactura" />
+          <AssociationSet Name="FK_Facturas_Clientes" Association="Self.FK_Facturas_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productosporfactura_Facturas" Association="Self.FK_Productosporfactura_Facturas">
+            <End Role="Facturas" EntitySet="Facturas" />
+            <End Role="Productosporfactura" EntitySet="Productosporfactura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto" Association="Self.FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto">
+            <End Role="Impuestoes" EntitySet="Impuestoes" />
+            <End Role="Productoes" EntitySet="Productoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productosporfactura_Productoes" Association="Self.FK_Productosporfactura_Productoes">
+            <End Role="Productoes" EntitySet="Productoes" />
+            <End Role="Productosporfactura" EntitySet="Productosporfactura" />
+          </AssociationSet>
+          <FunctionImport Name="AddFactura_Sp">
+            <Parameter Name="IdCliente" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="In" Type="Double" />
+            <Parameter Name="Subtotal" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="AddProductosporfactura_Sp">
+            <Parameter Name="IdFactura" Mode="In" Type="Int32" />
+            <Parameter Name="IdProducto" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFactura_Sp" ReturnType="Collection(PruebaSodModel.GetFactura_Sp_Result)">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFacturaPorproducto_Sp" ReturnType="Collection(PruebaSodModel.GetFacturaPorproducto_Sp_Result)">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFacturas_Sp" ReturnType="Collection(PruebaSodModel.GetFacturas_Sp_Result)" />
+          <FunctionImport Name="DeleteFactura_Sp">
+          <Parameter Name="IdFactura" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteProductosporfactura_Sp">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetProductosfactura_Sp" ReturnType="Collection(PruebaSodModel.GetProductosfactura_Sp_Result)">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetFactura_Sp_Result">
+          <Property Type="String" Name="RazonSocial" Nullable="false" />
+          <Property Type="String" Name="Correo" Nullable="false" />
+          <Property Type="String" Name="Direccion" Nullable="false" />
+          <Property Type="Int64" Name="Telefono" Nullable="false" />
+          <Property Type="Int32" Name="Nit" Nullable="false" />
+          <Property Type="Double" Name="Subtotal" Nullable="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Double" Name="Total" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetFacturaPorproducto_Sp_Result">
+          <Property Type="Int32" Name="Productorid" Nullable="false" />
+          <Property Type="String" Name="Descripcion" Nullable="false" />
+          <Property Type="Int32" Name="Valorunidad" Nullable="false" />
+          <Property Type="Int32" Name="impuestoid" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" />
+          <Property Type="Int32" Name="porcentaje" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetFacturas_Sp_Result">
+          <Property Type="String" Name="RazonSocial" Nullable="false" />
+          <Property Type="Int32" Name="Nit" Nullable="false" />
+          <Property Type="Double" Name="Subtotal" Nullable="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Double" Name="Total" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetProductosfactura_Sp_Result">
+          <Property Type="Int32" Name="Productorid" Nullable="false" />
+          <Property Type="String" Name="Descripcion" Nullable="false" />
+          <Property Type="Int32" Name="Valorunidad" Nullable="false" />
+          <Property Type="Int32" Name="impuestoid" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" />
+          <Property Type="Int32" Name="porcentaje" Nullable="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PruebaSodModelStoreContainer" CdmEntityContainer="PruebaSodEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="PruebaSodModel.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="Nit" ColumnName="Nit" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facturas">
+            <EntityTypeMapping TypeName="PruebaSodModel.Facturas">
+              <MappingFragment StoreEntitySet="Facturas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Impuestoes">
+            <EntityTypeMapping TypeName="PruebaSodModel.Impuestoes">
+              <MappingFragment StoreEntitySet="Impuestoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Productoes">
+            <EntityTypeMapping TypeName="PruebaSodModel.Productoes">
+              <MappingFragment StoreEntitySet="Productoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
+                <ScalarProperty Name="IdImpuesto" ColumnName="IdImpuesto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Productosporfactura">
+            <EntityTypeMapping TypeName="PruebaSodModel.Productosporfactura">
+              <MappingFragment StoreEntitySet="Productosporfactura">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddFactura_Sp" FunctionName="PruebaSodModel.Store.AddFactura_Sp" />
+          <FunctionImportMapping FunctionImportName="AddProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.AddProductosporfactura_Sp" />
+          <FunctionImportMapping FunctionImportName="GetFactura_Sp" FunctionName="PruebaSodModel.Store.GetFactura_Sp">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PruebaSodModel.GetFactura_Sp_Result">
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Nit" ColumnName="Nit" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFacturaPorproducto_Sp" FunctionName="PruebaSodModel.Store.GetFacturaPorproducto_Sp">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PruebaSodModel.GetFacturaPorproducto_Sp_Result">
+                <ScalarProperty Name="Productorid" ColumnName="Productorid" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
+                <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFacturas_Sp" FunctionName="PruebaSodModel.Store.GetFacturas_Sp">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PruebaSodModel.GetFacturas_Sp_Result">
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="Nit" ColumnName="Nit" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteFactura_Sp" FunctionName="PruebaSodModel.Store.DeleteFactura_Sp" />
+          <FunctionImportMapping FunctionImportName="DeleteProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.DeleteProductosporfactura_Sp" />
+          <FunctionImportMapping FunctionImportName="GetProductosfactura_Sp" FunctionName="PruebaSodModel.Store.GetProductosfactura_Sp">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PruebaSodModel.GetProductosfactura_Sp_Result">
+                <ScalarProperty Name="Productorid" ColumnName="Productorid" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
+                <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

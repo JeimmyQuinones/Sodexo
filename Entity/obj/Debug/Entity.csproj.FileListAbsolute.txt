@@ -1,0 +1,6 @@
+D:\Programas\Programa_aps.net\PruebaSodexo\Entity\bin\Debug\Entity.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Entity\bin\Debug\Entity.pdb
+D:\Programas\Programa_aps.net\PruebaSodexo\Entity\obj\Debug\Entity.csprojAssemblyReference.cache
+D:\Programas\Programa_aps.net\PruebaSodexo\Entity\obj\Debug\Entity.csproj.CoreCompileInputs.cache
+D:\Programas\Programa_aps.net\PruebaSodexo\Entity\obj\Debug\Entity.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Entity\obj\Debug\Entity.pdb

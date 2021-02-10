@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3bedbd1daeea4ed3b3b8415264c8b283" Name="Diagram1">
+        <EntityTypeShape EntityType="PruebaSodModel.Clientes" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaSodModel.Facturas" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaSodModel.Impuestoes" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaSodModel.Productoes" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaSodModel.Productosporfactura" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="PruebaSodModel.FK_Facturas_Clientes" ManuallyRouted="false" />
+        <AssociationConnector Association="PruebaSodModel.FK_Productosporfactura_Facturas" ManuallyRouted="false" />
+        <AssociationConnector Association="PruebaSodModel.FK_dbo_Productoes_dbo_Impuestoes_IdImpuesto" ManuallyRouted="false" />
+        <AssociationConnector Association="PruebaSodModel.FK_Productosporfactura_Productoes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

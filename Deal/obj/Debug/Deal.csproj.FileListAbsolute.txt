@@ -1,0 +1,14 @@
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Deal.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Deal.pdb
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Data.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Entity.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\EntityFramework.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Data.pdb
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Data.dll.config
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\Entity.pdb
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\bin\Debug\EntityFramework.xml
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\obj\Debug\Deal.csprojAssemblyReference.cache
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\obj\Debug\Deal.csproj.CoreCompileInputs.cache
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\obj\Debug\Deal.csproj.CopyComplete
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\obj\Debug\Deal.dll
+D:\Programas\Programa_aps.net\PruebaSodexo\Deal\obj\Debug\Deal.pdb
