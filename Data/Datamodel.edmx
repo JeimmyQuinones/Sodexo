@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PruebaSodModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PruebaSodModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Clientes">
           <Key>
             <PropertyRef Name="Nit" />
@@ -121,8 +121,16 @@
           <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
         <Function Name="GetFacturas_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetProductosfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="UpdateFactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="IdCliente" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="float" Mode="In" />
+          <Parameter Name="Subtotal" Type="float" Mode="In" />
+        </Function>
+        <Function Name="UpdateProductosporfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="IdFactura" Type="int" Mode="In" />
+          <Parameter Name="IdProducto" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="PruebaSodModelStoreContainer">
           <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
@@ -147,7 +155,8 @@
             <End Role="Productosporfactura" EntitySet="Productosporfactura" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PruebaSodModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -284,21 +293,29 @@
             <Parameter Name="IdFactura" Mode="In" Type="Int32" />
             <Parameter Name="IdProducto" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetFactura_Sp" ReturnType="Collection(PruebaSodModel.GetFactura_Sp_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetFacturaPorproducto_Sp" ReturnType="Collection(PruebaSodModel.GetFacturaPorproducto_Sp_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetFacturas_Sp" ReturnType="Collection(PruebaSodModel.GetFacturas_Sp_Result)" />
           <FunctionImport Name="DeleteFactura_Sp">
-          <Parameter Name="IdFactura" Mode="In" Type="Int32" />
+            <Parameter Name="IdFactura" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteProductosporfactura_Sp">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetProductosfactura_Sp" ReturnType="Collection(PruebaSodModel.GetProductosfactura_Sp_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="GetFactura_Sp" ReturnType="Collection(PruebaSodModel.GetFactura_Sp_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFacturaPorproducto_Sp" ReturnType="Collection(PruebaSodModel.GetFacturaPorproducto_Sp_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFacturas_Sp" ReturnType="Collection(PruebaSodModel.GetFacturas_Sp_Result)" />
+          <FunctionImport Name="UpdateFactura_Sp">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="IdCliente" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="In" Type="Double" />
+            <Parameter Name="Subtotal" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateProductosporfactura_Sp">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="IdFactura" Mode="In" Type="Int32" />
+            <Parameter Name="IdProducto" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetFactura_Sp_Result">
@@ -318,6 +335,7 @@
           <Property Type="Int32" Name="impuestoid" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="false" />
           <Property Type="Int32" Name="porcentaje" Nullable="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GetFacturas_Sp_Result">
           <Property Type="String" Name="RazonSocial" Nullable="false" />
@@ -325,15 +343,6 @@
           <Property Type="Double" Name="Subtotal" Nullable="false" />
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="Double" Name="Total" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GetProductosfactura_Sp_Result">
-          <Property Type="Int32" Name="Productorid" Nullable="false" />
-          <Property Type="String" Name="Descripcion" Nullable="false" />
-          <Property Type="Int32" Name="Valorunidad" Nullable="false" />
-          <Property Type="Int32" Name="impuestoid" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" />
-          <Property Type="Int32" Name="porcentaje" Nullable="false" />
-          <Property Type="Int32" Name="Id" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -392,6 +401,8 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AddFactura_Sp" FunctionName="PruebaSodModel.Store.AddFactura_Sp" />
           <FunctionImportMapping FunctionImportName="AddProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.AddProductosporfactura_Sp" />
+          <FunctionImportMapping FunctionImportName="DeleteFactura_Sp" FunctionName="PruebaSodModel.Store.DeleteFactura_Sp" />
+          <FunctionImportMapping FunctionImportName="DeleteProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.DeleteProductosporfactura_Sp" />
           <FunctionImportMapping FunctionImportName="GetFactura_Sp" FunctionName="PruebaSodModel.Store.GetFactura_Sp">
             <ResultMapping>
               <ComplexTypeMapping TypeName="PruebaSodModel.GetFactura_Sp_Result">
@@ -415,6 +426,7 @@
                 <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -429,21 +441,8 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="DeleteFactura_Sp" FunctionName="PruebaSodModel.Store.DeleteFactura_Sp" />
-          <FunctionImportMapping FunctionImportName="DeleteProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.DeleteProductosporfactura_Sp" />
-          <FunctionImportMapping FunctionImportName="GetProductosfactura_Sp" FunctionName="PruebaSodModel.Store.GetProductosfactura_Sp">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="PruebaSodModel.GetProductosfactura_Sp_Result">
-                <ScalarProperty Name="Productorid" ColumnName="Productorid" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
-                <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateFactura_Sp" FunctionName="PruebaSodModel.Store.UpdateFactura_Sp" />
+          <FunctionImportMapping FunctionImportName="UpdateProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.UpdateProductosporfactura_Sp" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -10,6 +10,31 @@ namespace Deal
 {
     public class ServiceDeal
     {
+        public static Impuestoes GetImpuesto(int id)
+        {
+            ServiceData db = new ServiceData();
+            return db.GetImpuesto(id);
+        }
+            public static List<Productoes> GetProductos()
+        {
+            ServiceData db = new ServiceData();
+            return db.GetProductos();
+        }
+        public static Productoes GetProducto(int id)
+        {
+            ServiceData db = new ServiceData();
+            return db.GetProducto(id);
+        }
+            public static Clientes GetCliente(int id)
+        {
+            ServiceData db = new ServiceData();
+            return db.GetCliente(id);
+        }
+            public static List<Clientes> GetClientes()
+        {
+            ServiceData db = new ServiceData();
+            return db.GetClientes();
+        }
         public static List<GetFacturas_Sp_Result> GetFacturas()
         {
             ServiceData db = new ServiceData();
@@ -21,7 +46,7 @@ namespace Deal
             return db.GetFactura(id);
 
         }
-        public static List<GetProductosfactura_Sp_Result> GetFacturaporproducto(int id)
+        public static List<GetFacturaPorproducto_Sp_Result> GetFacturaporproducto(int id)
         {
             ServiceData db = new ServiceData();
             return db.GetFacturaporproducto(id);

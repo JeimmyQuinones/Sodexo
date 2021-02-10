@@ -63,6 +63,24 @@ namespace Entity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddProductosporfactura_Sp", idFacturaParameter, idProductoParameter);
         }
     
+        public virtual int DeleteFactura_Sp(Nullable<int> idFactura)
+        {
+            var idFacturaParameter = idFactura.HasValue ?
+                new ObjectParameter("IdFactura", idFactura) :
+                new ObjectParameter("IdFactura", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteFactura_Sp", idFacturaParameter);
+        }
+    
+        public virtual int DeleteProductosporfactura_Sp(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteProductosporfactura_Sp", idParameter);
+        }
+    
         public virtual ObjectResult<GetFactura_Sp_Result> GetFactura_Sp(Nullable<int> id)
         {
             var idParameter = id.HasValue ?
@@ -86,31 +104,42 @@ namespace Entity
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetFacturas_Sp_Result>("GetFacturas_Sp");
         }
     
-        public virtual int DeleteFactura_Sp(Nullable<int> idFactura)
+        public virtual int UpdateFactura_Sp(Nullable<int> id, Nullable<int> idCliente, Nullable<double> total, Nullable<double> subtotal)
         {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            var idClienteParameter = idCliente.HasValue ?
+                new ObjectParameter("IdCliente", idCliente) :
+                new ObjectParameter("IdCliente", typeof(int));
+    
+            var totalParameter = total.HasValue ?
+                new ObjectParameter("Total", total) :
+                new ObjectParameter("Total", typeof(double));
+    
+            var subtotalParameter = subtotal.HasValue ?
+                new ObjectParameter("Subtotal", subtotal) :
+                new ObjectParameter("Subtotal", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateFactura_Sp", idParameter, idClienteParameter, totalParameter, subtotalParameter);
+        }
+    
+        public virtual int UpdateProductosporfactura_Sp(Nullable<int> id, Nullable<int> idFactura, Nullable<int> idProducto)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
             var idFacturaParameter = idFactura.HasValue ?
                 new ObjectParameter("IdFactura", idFactura) :
                 new ObjectParameter("IdFactura", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteFactura_Sp", idFacturaParameter);
-        }
+            var idProductoParameter = idProducto.HasValue ?
+                new ObjectParameter("IdProducto", idProducto) :
+                new ObjectParameter("IdProducto", typeof(int));
     
-        public virtual int DeleteProductosporfactura_Sp(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteProductosporfactura_Sp", idParameter);
-        }
-    
-        public virtual ObjectResult<GetProductosfactura_Sp_Result> GetProductosfactura_Sp(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductosfactura_Sp_Result>("GetProductosfactura_Sp", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateProductosporfactura_Sp", idParameter, idFacturaParameter, idProductoParameter);
         }
     }
 }

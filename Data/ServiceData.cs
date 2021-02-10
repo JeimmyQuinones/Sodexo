@@ -10,6 +10,71 @@ namespace Data
 {
     public class ServiceData
     {
+        public List<Productoes> GetProductos()
+        {
+            try
+            {
+                PruebaSodEntities db = new PruebaSodEntities();
+                return db.Productoes.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+        public Productoes GetProducto(int id)
+        {
+            try
+            {
+                PruebaSodEntities db = new PruebaSodEntities();
+                return db.Productoes.Where(x => x.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+        public Impuestoes GetImpuesto(int id)
+        {
+            try
+            {
+                PruebaSodEntities db = new PruebaSodEntities();
+                return db.Impuestoes.Where(x => x.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+        public List<Clientes> GetClientes()
+        {
+            try
+            {
+                PruebaSodEntities db = new PruebaSodEntities();
+                return db.Clientes.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+        public Clientes GetCliente(int id)
+        {
+            try
+            {
+                PruebaSodEntities db = new PruebaSodEntities();
+                return db.Clientes.Where(x=>x.Nit==id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
         public List<GetFacturas_Sp_Result> GetFacturas()
         {
             try
@@ -35,12 +100,12 @@ namespace Data
             }
 
         }
-        public List<GetProductosfactura_Sp_Result> GetFacturaporproducto(int id)
+        public List<GetFacturaPorproducto_Sp_Result> GetFacturaporproducto(int id)
         {
             try
             {
                 PruebaSodEntities db = new PruebaSodEntities();
-                return db.Database.SqlQuery<GetProductosfactura_Sp_Result>("GetProductosfactura_Sp @id", new SqlParameter("@id", id)).ToList();
+                return db.Database.SqlQuery<GetFacturaPorproducto_Sp_Result>("GetFacturaPorproducto_Sp @id", new SqlParameter("@id", id)).ToList();
             }
             catch (Exception ex)
             {

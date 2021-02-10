@@ -52,6 +52,8 @@
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="AddFactura_Sp" FunctionName="PruebaSodModel.Store.AddFactura_Sp" />
     <FunctionImportMapping FunctionImportName="AddProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.AddProductosporfactura_Sp" />
+    <FunctionImportMapping FunctionImportName="DeleteFactura_Sp" FunctionName="PruebaSodModel.Store.DeleteFactura_Sp" />
+    <FunctionImportMapping FunctionImportName="DeleteProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.DeleteProductosporfactura_Sp" />
     <FunctionImportMapping FunctionImportName="GetFactura_Sp" FunctionName="PruebaSodModel.Store.GetFactura_Sp">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PruebaSodModel.GetFactura_Sp_Result">
@@ -75,6 +77,7 @@
           <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
           <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -89,20 +92,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="DeleteFactura_Sp" FunctionName="PruebaSodModel.Store.DeleteFactura_Sp" />
-    <FunctionImportMapping FunctionImportName="DeleteProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.DeleteProductosporfactura_Sp" />
-    <FunctionImportMapping FunctionImportName="GetProductosfactura_Sp" FunctionName="PruebaSodModel.Store.GetProductosfactura_Sp">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="PruebaSodModel.GetProductosfactura_Sp_Result">
-          <ScalarProperty Name="Productorid" ColumnName="Productorid" />
-          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-          <ScalarProperty Name="Valorunidad" ColumnName="Valorunidad" />
-          <ScalarProperty Name="impuestoid" ColumnName="impuestoid" />
-          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-          <ScalarProperty Name="porcentaje" ColumnName="porcentaje" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="UpdateFactura_Sp" FunctionName="PruebaSodModel.Store.UpdateFactura_Sp" />
+    <FunctionImportMapping FunctionImportName="UpdateProductosporfactura_Sp" FunctionName="PruebaSodModel.Store.UpdateProductosporfactura_Sp" />
   </EntityContainerMapping>
 </Mapping>

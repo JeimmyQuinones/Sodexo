@@ -133,6 +133,12 @@
       <Parameter Name="IdFactura" Mode="In" Type="Int32" />
       <Parameter Name="IdProducto" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="DeleteFactura_Sp">
+      <Parameter Name="IdFactura" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="DeleteProductosporfactura_Sp">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="GetFactura_Sp" ReturnType="Collection(PruebaSodModel.GetFactura_Sp_Result)">
       <Parameter Name="Id" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -140,14 +146,16 @@
       <Parameter Name="Id" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="GetFacturas_Sp" ReturnType="Collection(PruebaSodModel.GetFacturas_Sp_Result)" />
-    <FunctionImport Name="DeleteFactura_Sp">
+    <FunctionImport Name="UpdateFactura_Sp">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="IdCliente" Mode="In" Type="Int32" />
+      <Parameter Name="Total" Mode="In" Type="Double" />
+      <Parameter Name="Subtotal" Mode="In" Type="Double" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateProductosporfactura_Sp">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
       <Parameter Name="IdFactura" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="DeleteProductosporfactura_Sp">
-      <Parameter Name="Id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="GetProductosfactura_Sp" ReturnType="Collection(PruebaSodModel.GetProductosfactura_Sp_Result)">
-      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="IdProducto" Mode="In" Type="Int32" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="GetFactura_Sp_Result">
@@ -167,6 +175,7 @@
     <Property Type="Int32" Name="impuestoid" Nullable="false" />
     <Property Type="String" Name="Nombre" Nullable="false" />
     <Property Type="Int32" Name="porcentaje" Nullable="false" />
+    <Property Type="Int32" Name="Id" Nullable="false" />
   </ComplexType>
   <ComplexType Name="GetFacturas_Sp_Result">
     <Property Type="String" Name="RazonSocial" Nullable="false" />
@@ -174,14 +183,5 @@
     <Property Type="Double" Name="Subtotal" Nullable="false" />
     <Property Type="Int32" Name="Id" Nullable="false" />
     <Property Type="Double" Name="Total" Nullable="false" />
-  </ComplexType>
-  <ComplexType Name="GetProductosfactura_Sp_Result">
-    <Property Type="Int32" Name="Productorid" Nullable="false" />
-    <Property Type="String" Name="Descripcion" Nullable="false" />
-    <Property Type="Int32" Name="Valorunidad" Nullable="false" />
-    <Property Type="Int32" Name="impuestoid" Nullable="false" />
-    <Property Type="String" Name="Nombre" Nullable="false" />
-    <Property Type="Int32" Name="porcentaje" Nullable="false" />
-    <Property Type="Int32" Name="Id" Nullable="false" />
   </ComplexType>
 </Schema>

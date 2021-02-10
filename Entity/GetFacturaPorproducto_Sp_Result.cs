@@ -19,5 +19,6 @@ namespace Entity
         public int impuestoid { get; set; }
         public string Nombre { get; set; }
         public int porcentaje { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -1,44 +1,322 @@
 ﻿
-@model WebApplication.Models.FaturaViewModel
+@model WebApplication.Models.FaturaEditViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 <script>
+    var estate = -40;
+    var dele = "p,";
     function Cancelar() {
         window.location.href = "@Url.Action("Index", "Factura")" ;
+    }
+    function NuevoProducto() {
+        var slect = " ";
+
+        $.ajax({
+                type: "GET",
+                url: "@Url.Action("Productslist", "Factura")",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+              success: function (datos) {
+                  for (var i = 0; i < datos.length; i++) {
+                      slect += "<option value='" + datos[i].Id + "'>" + datos[i].Descripcion + "</option>";
+                  }
+                  var srt = `
+<div id="`+ estate + `.new">
+ <input id="`+ estate + `.idproduc" type="hidden" value="">
+<table class="table tablecolor">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Valor Unidad</th>
+                    <th scope="col">Impuesto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+
+                        <td> </td>
+                        <td>
+                                <select class="custom-select" id="`+ estate + `.producto" onchange="cambiardatosProducto(this)">
+                                    <option selected>--Seleccione un Producto--</option>
+                                    `+ slect + `
+
+                                </select>
+                        </td>
+                        <td>  <input readonly class="form-control" id="`+ estate + `.Valorunidad.Producto" value=""></td>
+                        <td> <input readonly class="form-control" id="`+ estate + `.Impuesto.Producto" value=""> </td>
+                        <td> <input class="form-control" id="`+ estate + `.Cantidad.Producto" value=""> </td>
+                        <td>
+                          <button id="`+ estate + `" type="button" class="btn btn-danger" onclick="Eliminar(this)"> Eliminar</button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <br />
+</div>
+        `;
+                  document.getElementById("Compoproducto").insertAdjacentHTML('beforeend', srt);
+                  estate++;
+                },
+                error: function (msg) {
+                    console.log("error");
+                }
+             });
+
+
+
+    }
+    $("#prueba").on("keyup", function () {
+        var largo = $("#prueba").val().length
+    });
+    function Eliminar(ideliminar) {
+        console.log(ideliminar.id);
+        let id = String(ideliminar.id) + ".new";
+        var elem = document.getElementById(id);
+        var div = document.getElementById("Compoproducto");
+        div.removeChild(elem);
+        dele += ideliminar.id + ",";
+    }
+    function cambiardatoscliente(idcliente) {
+        var datos = { "id": idcliente };
+          $.ajax({
+                type: "GET",
+                url: "@Url.Action("Dataclient", "Factura")",
+              data: datos,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+              success: function (datos) {
+                  console.log(datos);
+                  console.log(datos.Nit);
+                  var Nit = document.getElementById("Nit");
+                  var RazonSocial = document.getElementById("RazonSocial");
+                  var Telefono = document.getElementById("Telefono");
+                  var Direccion = document.getElementById("Direccion");
+                  var Correo = document.getElementById("Correo");
+                  Nit.value = datos.Nit;
+                  RazonSocial.value = datos.RazonSocial;
+                  Telefono.value = datos.Telefono;
+                  Direccion.value = datos.Direccion;
+                  Correo.value = datos.Correo;
+                },
+                error: function (msg) {
+                    console.log("error");
+
+                }
+             });
+    }
+    function cambiardatosProducto(valor) {
+        var datos = { "id": valor.value };
+          $.ajax({
+                type: "GET",
+                url: "@Url.Action("DataProduct", "Factura")",
+              data: datos,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+              success: function (datos) {
+                  console.log(datos);
+                  var iten = valor.id.split(".")
+                  var numer = iten[0];
+                  var Valorunidad = document.getElementById(numer+".Valorunidad.Producto");
+                  var Impuesto = document.getElementById(numer +".Impuesto.Producto");
+                  var idproduc = document.getElementById(numer + ".idproduc");
+                  Valorunidad.value = datos.Valorunidad +"$";
+                  Impuesto.value = datos.porcentaje +"%";
+                  idproduc.value = datos.Id;
+                },
+                error: function (msg) {
+                    console.log("error");
+
+                }
+             });
+    }
+    function GuardarDatos() {
+        var father = $("#Compoproducto").children()
+        var resultado = [];
+        for (var i = 0; i < father.length; i++) {
+            var Produc = { IdProduct: null, Cantidad: null };
+            var idsrd = father[i].id;
+            var ids = idsrd.split(".");
+            var Productid = document.getElementById(ids[0] + ".idproduc").value;
+            var catidadpro = document.getElementById(ids[0] + ".Cantidad.Producto").value;
+            Produc.IdProduct = Productid;
+            Produc.Cantidad = catidadpro;
+
+            resultado[i] = Produc;
         }
+        
+        var nit = document.getElementById("Nit").value;
+        var datastring = new FormData();
+        datastring.append('Nit', nit);
+        for (let i = 0; i < resultado.length; i++) {
+
+            datastring.append('Product[' + i + '].IdProduct', resultado[i].IdProduct)
+            datastring.append('Product[' + i + '].Cantidad', resultado[i].Cantidad)
+
+        };
+        $.ajax({
+                             type: "POST",
+                             url: "@Url.Action("SaveData", "Factura")",
+                             data: datastring,
+                             processData: false,
+                             contentType: false,
+                               async: false ,
+                             success: function (data) {
+                                 $("#alerespera").hide();
+                                 $("#alertsavesucces").show();
+                             },
+                             error: function (error) {
+                                 $("#alerespera").hide();
+                                 $("#alertsavesucces").show();
+                             }
+                         });
+         
+    }
+    
+
 </script>
 
 <h2>Editar</h2>
 <hr />
+<br />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.HiddenFor(model => model.Id)
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.HiddenFor(model => model.Id)
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Ingrese aca el cliente: </label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Nit, Model.Clientes, new
+               {
+                   @class = "form-control",
+                   @id = "Clientedata",
+                   onchange = @"cambiardatoscliente(this.value);"
+               }
+              )
+            @Html.ValidationMessageFor(model => model.Nit, "", new { @class = "text-danger" })
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <br />
+    <h5>Datos del cliente</h5>
+    <hr />
+    <div class="form-group">
+        <label for="exampleInputEmail1">Nit</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="Nit" value="@Model.Nit">
         </div>
+    </div>
 
-        
+    <div class="form-group">
+        <label for="exampleInputEmail1">RazonSocial</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="RazonSocial" value="@Model.RazonSocial">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Telefono</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="Telefono" value="@Model.Telefono">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Dirección</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="Direccion" value="@Model.Direccion">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Correo</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="Correo" value="@Model.Correo">
+        </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-success" />
-                <button type="button" class="btn btn-danger" onclick="Cancelar()">Cancelar</button>
-            </div>
+    <br />
+    <br />
+
+    <h5>Productos</h5>
+    <hr />
+
+    <button type="button" class="btn btn-info" onclick="NuevoProducto()"> Agregar</button>
+    <div id="Compoproducto">
+
+        <div id="1.new">
+            <input id="1.idproduc" type="hidden" value="1">
+            <table class="table tablecolor">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Valor Unidad</th>
+                        <th scope="col">Impuesto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td> </td>
+                        <td>
+
+                            @Html.DropDownListFor(model => model.productint, Model.Productos, new
+                             {
+                                 @class = "form-control",
+                                 @id = "1.producto",
+                                 onchange = @"cambiardatosProducto(this);"
+                             }
+                            )
+                        </td>
+                        <td>  <input readonly class="form-control" id="1.Valorunidad.Producto" value=""></td>
+                        <td> <input readonly class="form-control" id="1.Impuesto.Producto" value=""> </td>
+                        <td> <input class="form-control" id="1.Cantidad.Producto" value=""> </td>
+                        <td>
+                            <button id="1" type="button" class="btn btn-danger" onclick="Eliminar(this)"> Eliminar</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">SubTotal</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="SubTotal" value="@Model.Subtotal">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Total</label>
+        <div class="col-md-10">
+            <input readonly class="form-control" id="Total" value="@Model.Total">
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="button" class="btn btn-success" onclick="GuardarDatos()">Guardar</button>
+            <button type="button" class="btn btn-danger" onclick="Cancelar()">Cancelar</button>
+        </div>
+    </div>
+    <br />
+    <br />
+
+</div>
 }
 

@@ -116,8 +116,16 @@
     <Parameter Name="Id" Type="int" Mode="In" />
   </Function>
   <Function Name="GetFacturas_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <Function Name="GetProductosfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+  <Function Name="UpdateFactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="IdCliente" Type="int" Mode="In" />
+    <Parameter Name="Total" Type="float" Mode="In" />
+    <Parameter Name="Subtotal" Type="float" Mode="In" />
+  </Function>
+  <Function Name="UpdateProductosporfactura_Sp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="IdFactura" Type="int" Mode="In" />
+    <Parameter Name="IdProducto" Type="int" Mode="In" />
   </Function>
   <EntityContainer Name="PruebaSodModelStoreContainer">
     <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
